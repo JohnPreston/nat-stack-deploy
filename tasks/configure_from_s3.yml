@@ -1,0 +1,16 @@
+---
+# tasks file for nat-stack-deploy
+
+- name: Get the latest ports.conf
+  s3: bucket="{{ bucket_name.stdout }}" object="ec2Mgmt-{{ item  }}" dest="/var/tmp/{{ item }}" mode=get s3_url="{{ s3_url }}"
+  with_items:
+  - "ports.conf"
+
+- name: Get the latest elb.conf (destination/target)
+  s3: bucket="{{ bucket_name.stdout }}" object="ec2Mgmt-{{ item  }}" dest="/var/tmp/{{ item }}" mode=get s3_url="{{ s3_url }}"
+  with_items:
+  - "elb.conf"
+
+
+#- name: Get the latest ec2_url
+#- name: Get the latest s3_url

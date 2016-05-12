@@ -1,0 +1,9 @@
+#
+#
+#
+
+- name: Install python-pip
+  yum: name=python-pip state=present
+
+- name: Install AWS CLI
+  pip: name=awscli state=present

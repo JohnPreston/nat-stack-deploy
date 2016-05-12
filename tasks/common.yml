@@ -1,0 +1,5 @@
+# tasks file for nat-stack-init
+
+- name: Get the bucketname
+  shell: head -1 /var/tmp/bucketname.conf | awk -F. '{print $1}'
+  register: bucket_name

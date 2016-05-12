@@ -1,2 +1,19 @@
 ---
 # tasks file for nat-stack-deploy
+
+- name: pre-requesites
+  include: pre_requesites.yml
+
+- name: Set machine facts
+  setup:
+
+- name: Set EC2 facts
+  action: ec2_facts
+  register: ec2_data
+
+- name: Common
+  include: common.yml
+
+- name: Update configuration from S3 files
+  include: configure_from_s3.yml
+
