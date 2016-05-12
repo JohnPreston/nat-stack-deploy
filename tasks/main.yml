@@ -17,3 +17,8 @@
 - name: Update configuration from S3 files
   include: configure_from_s3.yml
 
+- name: Parse target
+  include: parse_target.yml
+
+- name: Configure HAProxy
+  include: configure_haproxy.yml

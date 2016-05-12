@@ -1,0 +1,20 @@
+---
+# Parse target
+
+- name: Get the src port
+  script: parse_target.sh {{ item }} 1
+  with_items:
+  - "/var/tmp/elb.conf"
+  register: src_port
+
+- name: Get the target dns
+  script: parse_target.sh {{ item }} 2
+  with_items:
+  - "/var/tmp/elb.conf"
+  register: target_dns
+
+- name: Get the dest port
+  script: parse_target.sh {{ item }} 3
+  with_items:
+  - "/var/tmp/elb.conf"
+  register: dest_port

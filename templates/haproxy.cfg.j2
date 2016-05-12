@@ -1,0 +1,44 @@
+#---------------------------------------------------------------------
+# Global settings
+#---------------------------------------------------------------------
+global
+    log         127.0.0.1 local2
+
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    maxconn     8092
+    user        haproxy
+    group       haproxy
+    daemon
+
+defaults
+    mode                    tcp
+    log                     global
+
+#---------------------------------------------------------------------
+# round robin balancing between the LoadBalancers
+#---------------------------------------------------------------------
+
+##{{  src_port.results[0].stdout_lines }}
+
+##
+
+## {{ dest_port.results[0].stdout_lines }}
+{% set j = 0 %}
+{% for src_port in src_port.results[0].stdout_lines %}
+
+frontend main{{ src_port }} *:{{ src_port }}
+ default_backend back{{ src_port }}
+
+backend back{{ src_port }}
+    mode tcp
+    option tcplog
+    balance leastconn
+{% set i = 0 %}
+{% for elb_ip in elbs_addresses.stdout_lines %}
+    server target{{ i }} {{ elb_ip| ipaddr('address') }}:{{ dest_port.results[0].stdout_lines[j] }} check
+{% set i = i + 1 %}
+{% endfor %}
+{% set j = j + 1 %}
+{% endfor %}
+
