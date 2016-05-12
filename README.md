@@ -13,7 +13,6 @@ Role Variables
 
 | Name | Type | Required | Default | Description
 |--- |--- |--- |--- |---
-| deploy_nat_version | String | True | master | Version of the role
 
 
 Example Playbook
