@@ -1,5 +1,9 @@
 # tasks file for nat-stack-init
 
+- name: Who am I
+  shell: head -1 /var/tmp/whoami.conf
+  register: who_i_am
+
 - name: Get the bucketname
   shell: head -1 /var/tmp/bucketname.conf | awk -F. '{print $1}'
   register: bucket_name

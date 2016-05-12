@@ -1,9 +1,20 @@
+---
+# Configure HAProxy
 
 - name: Debug ELB DNS Name
   debug: msg="{{ target_dns.results[0].stdout_lines[0] }}"
+  when:
+  - debug
 
 - name: Resolve ELB DNS name A records
-  shell: dig "{{ target_dns.results[0].stdout_lines[0] }}" |  grep IN | grep A | grep -v SOA | egrep '(elb|eucalyptus)' | grep -v \; |  awk '{print $5}' | sort
+  shell: dig "{{ target_dns.results[0].stdout_lines[0] }}" |
+         grep IN |
+         grep A |
+         grep -v SOA |
+         egrep '(elb|eucalyptus)' |
+         grep -v \; |
+         awk '{print $5}' |
+         sort
   register: elbs_addresses
   ignore_errors: true
   tags:
@@ -15,6 +26,7 @@
   when:
   - elbs_addresses|length > 7
   - elbs_addresses|success
+  - debug
   tags:
   - debug
   - haproxy_config
