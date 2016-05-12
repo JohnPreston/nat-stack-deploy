@@ -22,3 +22,6 @@
 
 - name: Configure HAProxy
   include: configure_haproxy.yml
+
+- name: Configure Security Group
+  include: configure_sg.yml
