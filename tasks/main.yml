@@ -29,5 +29,5 @@
 - name: Configure EIP
   include: configure_eip.yml
 
-#- name: Add crontab
-#  cron: name=auto-update-elb month=* day=* hour=*  minute=*/1 job="bash /etc/ansible/roles/nat-stack-deploy/files/cronjob_deploy.sh"
+- name: Add crontab
+  cron: name=auto-update-elb month=* day=* hour=*  minute=*/1 job="bash /etc/ansible/roles/nat-stack-deploy/files/cronjob_deploy.sh"
