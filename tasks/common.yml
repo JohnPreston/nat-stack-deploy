@@ -9,7 +9,7 @@
   register: bucket_name
 
 - name: Get the security group ID
-  shell: head -1 /var/tmp/securityGroup.conf
+  shell: head -1 /var/tmp/security_group.conf
   register: security_group
 
 - name: Get the admin port
