@@ -3,7 +3,7 @@
 
 - name: Get opened ports
   shell:  aws ec2 describe-security-groups
-          --group-id sg-b0556ed3
+          --group-id `head -1 /var/tmp/security_group.conf`
           --endpoint-url=`head -1 /var/tmp/ec2.conf`
           --region=eucalyptus --output=text |
           grep IPPERMISSION |
@@ -20,7 +20,7 @@
   shell: aws ec2 authorize-security-group-ingress
          --protocol tcp
          --port {{ item }}
-         --group-id `head -1 /var/tmp/securityGroup.conf`
+         --group-id `head -1 /var/tmp/security_group.conf`
          --cidr=0.0.0.0/0
          --endpoint-url=`head -1 /var/tmp/ec2.conf`
          --region=eucalyptus
@@ -33,7 +33,7 @@
 - name: Close non wanted ports
   shell: aws ec2 revoke-security-group-ingress
          --protocol tcp --port {{ item }}
-         --group-id `head -1 /var/tmp/securityGroup.conf`
+         --group-id `head -1 /var/tmp/security_group.conf`
          --cidr=0.0.0.0/0
          --endpoint-url=`head -1 /var/tmp/ec2.conf`
          --region=eucalyptus

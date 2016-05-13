@@ -19,11 +19,10 @@ defaults
 # round robin balancing between the LoadBalancers
 #---------------------------------------------------------------------
 
-##{{  src_port.results[0].stdout_lines }}
-
+## SRC ports {{  src_port.results[0].stdout_lines }}
 ##
+## DEST ports {{ dest_port.results[0].stdout_lines }}
 
-## {{ dest_port.results[0].stdout_lines }}
 {% set j = 0 %}
 {% for src_port in src_port.results[0].stdout_lines %}
 
@@ -41,4 +40,3 @@ backend back{{ src_port }}
 {% endfor %}
 {% set j = j + 1 %}
 {% endfor %}
-
