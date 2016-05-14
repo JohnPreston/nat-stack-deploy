@@ -6,15 +6,21 @@
   with_items:
   - "/var/tmp/target.conf"
   register: src_port
+  tags:
+  - target
 
 - name: Get the target dns
   script: parse_target.sh {{ item }} 2
   with_items:
   - "/var/tmp/target.conf"
   register: target_dns
+  tags:
+  - target
 
 - name: Get the dest port
   script: parse_target.sh {{ item }} 3
   with_items:
   - "/var/tmp/target.conf"
   register: dest_port
+  tags:
+  - target

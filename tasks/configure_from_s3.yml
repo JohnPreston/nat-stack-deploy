@@ -9,3 +9,6 @@
       mode=get
   with_items:
   - "target.conf"
+  tags:
+  - s3
+  - deploy_config

@@ -31,3 +31,5 @@
 
 - name: Add crontab
   cron: name=auto-update-elb month=* day=* hour=*  minute=*/1 job="bash /etc/ansible/roles/nat-stack-deploy/files/cronjob_deploy.sh"
+  when:
+  - add_cron

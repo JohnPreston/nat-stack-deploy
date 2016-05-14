@@ -10,11 +10,17 @@
           egrep -v '(icmp|{{ admin_port.stdout }})' |
           awk '{print $2}'
   register: opened_ports
+  tags:
+  - ec2
+  - security_groups
 
 - name: Debug opened ports
   debug: msg="{{ opened_ports.stdout_lines }}"
   when:
   - debug
+  tags:
+  - ec2
+  - security_groups
 
 - name: Open SG for all src ports
   shell: aws ec2 authorize-security-group-ingress
@@ -29,6 +35,9 @@
   - "{{ src_port.results[0].stdout_lines }}"
   when:
   - "{{ item not in opened_ports.stdout_lines }}"
+  tags:
+  - ec2
+  - security_groups
 
 - name: Close non wanted ports
   shell: aws ec2 revoke-security-group-ingress
@@ -43,3 +52,6 @@
   when:
   - "{{ item not in src_port.results[0].stdout_lines }}"
   - not {{ item }} == "{{ admin_port.stdout }}"
+  tags:
+  - ec2
+  - security_groups

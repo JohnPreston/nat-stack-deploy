@@ -5,22 +5,24 @@
   debug: msg="Jason Bourne is {{ who_i_am.stdout }}"
   when:
   - debug
-
-- name: Get the bucketname
-  shell: head -1 /var/tmp/bucketname.conf | awk -F. '{print $1}'
-  register: bucket_name
-
-- name: Debug the bucket name
-  debug: msg="{{ bucket_name.stdout }}"
-  when:
-  - debug
+  tags:
+  - ec2
+  - eip
 
 - name: Get the EIP config to apply
   s3: bucket="{{ bucket_name.stdout }}" object="{{ who_i_am.stdout }}.conf" dest="/var/tmp/eip.conf" mode=get s3_url="{{ s3_url }}"
+  tags:
+  - s3
+  - ec2
+  - eip
 
 - name: Get the EIP from the local file config
   shell: cat /var/tmp/eip.conf
   register: eips_dedicated
+  tags:
+  - s3
+  - ec2
+  - eip
 
 - name: Debug local EIP from file
   debug: msg={{ item }}
@@ -28,11 +30,19 @@
   - "{{ eips_dedicated.stdout_lines }}"
   when:
   - debug
+  tags:
+  - s3
+  - ec2
+  - eip
 
 - name: Debug Instance meta-data public-ipv4
   debug: msg="{{ ansible_ec2_public_ipv4 }}"
   when:
   - debug
+  tags:
+  - s3
+  - ec2
+  - eip
 
 - name: Checks if the public-ipv4 matches IPs in the list
   fail: msg="{{ ansible_ec2_public_ipv4 }} not in the list"
@@ -40,6 +50,10 @@
   - ansible_ec2_public_ipv4 not in eips_dedicated.stdout_lines
   register: eip_present
   ignore_errors: true
+  tags:
+  - s3
+  - ec2
+  - eip
 
 - name: Pick an EIP
   shell: echo {{item }}
@@ -48,11 +62,19 @@
   - "{{ eips_dedicated.stdout_lines|random }}"
   when:
   - eip_present|failed
+  tags:
+  - s3
+  - ec2
+  - eip
 
 - name: Debug the eip
   debug: msg="{{ the_eip.results[0].stdout }}"
   when:
   - debug
+  tags:
+  - s3
+  - ec2
+  - eip
 
 - name: Check if EIP is used
   shell: ping -c 100 -f {{ the_eip.results[0].stdout }}
@@ -60,6 +82,10 @@
   when:
   - eip_present|failed
   ignore_errors: true
+  tags:
+  - s3
+  - ec2
+  - eip
 
 #
 # bug in 2.0 for the module
@@ -75,3 +101,7 @@
   when:
   - eip_present|failed
   - eip_reachable|failed
+  tags:
+  - s3
+  - ec2
+  - eip

@@ -5,6 +5,9 @@
   debug: msg="{{ target_dns.results[0].stdout_lines[0] }}"
   when:
   - debug
+  tags:
+  - haproxy_config
+  - elbs_ips
 
 - name: Resolve ELB DNS name A records
   shell: dig "{{ target_dns.results[0].stdout_lines[0] }}" |

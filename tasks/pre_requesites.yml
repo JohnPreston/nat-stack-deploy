@@ -3,6 +3,12 @@
 
 - name: Install python-pip
   yum: name=python-pip state=present
+  tags:
+  - prerequesites
+  - packages
 
 - name: Install AWS CLI
   pip: name=awscli state=present
+  tags:
+  - prerequesites
+  - packages
