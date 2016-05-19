@@ -25,11 +25,11 @@
   when:
   - add_cron
 
-- name: Configure Security Group
-  include: configure_sg.yml
-
 - name: Configure EIP
   include: configure_eip.yml
+
+- name: Configure Security Group
+  include: configure_sg.yml
 
 - name: Configure HAProxy
   include: configure_haproxy.yml
