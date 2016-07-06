@@ -14,7 +14,11 @@ global
 defaults
     mode                    tcp
     log                     global
-
+    timeout                 client 15m 
+    timeout                 server 15m 
+    timeout                 connect 15s
+    timeout                 client-fin 30s 
+    timeout                 server-fin 30s
 #---------------------------------------------------------------------
 # round robin balancing between the LoadBalancers
 #---------------------------------------------------------------------
