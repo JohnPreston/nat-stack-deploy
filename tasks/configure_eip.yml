@@ -77,11 +77,10 @@
   - eip
 
 - name: Check if EIP is used
-  shell: ping -c 100 -f {{ the_eip.results[0].stdout }}
+  shell: aws ec2 describe-addresses --endpoint-url={{ ec2_url }} --region=eucalyptus --query 'Addresses[?PublicIp==`"{{ the_eip.results[0].stdout }}"`].InstanceId' --output=text
   register: eip_reachable
   when:
   - eip_present|failed
-  ignore_errors: true
   tags:
   - s3
   - ec2
@@ -100,7 +99,7 @@
   shell: aws ec2 associate-address --instance-id {{ ansible_ec2_instance_id }} --public-ip {{ the_eip.results[0].stdout }} --endpoint-url={{ ec2_url }} --region=eucalyptus
   when:
   - eip_present|failed
-  - eip_reachable|failed
+  - eip_reachable.stdout == ""
   tags:
   - s3
   - ec2
